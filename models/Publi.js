@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../config/database.js";
-import Usuario from "./Usuario.js";
+import sequelize from "../database/db.js";
+import Usuario from "./User.js";
 
 const Publicacao = sequelize.define("Publicacao", {
   titulo: { type: DataTypes.STRING, allowNull: false },

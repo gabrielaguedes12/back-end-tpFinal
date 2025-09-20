@@ -3,7 +3,7 @@ import {
   criarPublicacao,
   listarPublicacoes,
   curtirPublicacao,
-} from "../controllers/publicacaoController.js";
+} from "../Controllers/publicacaoController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import multer from "multer";
 

@@ -1,5 +1,5 @@
-import Publicacao from "../models/Publicacao.js";
-import cloudinary from "../utils/cloudinary.js";
+import Publicacao from "../models/Publi.js";
+import cloudinary from "../utils/cloudnary.js";
 
 export const criarPublicacao = async (req, res) => {
   try {
