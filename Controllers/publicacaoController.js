@@ -1,4 +1,5 @@
-import Publicacao from "../models/Publi.js";
+import Publicacao from "../models/Publicacao.js";
+import { Op } from "sequelize";
 import cloudinary from "../utils/cloudnary.js";
 
 export const criarPublicacao = async (req, res) => {
@@ -8,12 +9,14 @@ export const criarPublicacao = async (req, res) => {
       const result = await cloudinary.uploader.upload(req.file.path);
       urlImagem = result.secure_url;
     }
+
     const publicacao = await Publicacao.create({
       titulo: req.body.titulo,
       descricao: req.body.descricao,
       imagem: urlImagem,
       usuarioId: req.usuario.id,
     });
+
     res.json(publicacao);
   } catch (err) {
     res.status(500).json({ mensagem: err.message });
@@ -22,19 +25,28 @@ export const criarPublicacao = async (req, res) => {
 
 export const listarPublicacoes = async (req, res) => {
   const busca = req.query.busca || "";
-  const publicacoes = await Publicacao.findAll({
-    where: { titulo: { [Op.like]: `%${busca}%` } },
-    order: [["createdAt", "DESC"]],
-  });
-  res.json(publicacoes);
+  try {
+    const publicacoes = await Publicacao.findAll({
+      where: { titulo: { [Op.like]: `%${busca}%` } },
+      order: [["createdAt", "DESC"]],
+    });
+    res.json(publicacoes);
+  } catch (err) {
+    res.status(500).json({ mensagem: err.message });
+  }
 };
 
 export const curtirPublicacao = async (req, res) => {
   const { id } = req.params;
-  const pub = await Publicacao.findByPk(id);
-  if (!pub)
-    return res.status(404).json({ mensagem: "Publicação não encontrada" });
-  pub.curtidas += 1;
-  await pub.save();
-  res.json(pub);
+  try {
+    const pub = await Publicacao.findByPk(id);
+    if (!pub)
+      return res.status(404).json({ mensagem: "Publicação não encontrada" });
+
+    pub.curtidas += 1;
+    await pub.save();
+    res.json(pub);
+  } catch (err) {
+    res.status(500).json({ mensagem: err.message });
+  }
 };

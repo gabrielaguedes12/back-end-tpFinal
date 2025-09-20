@@ -1,11 +1,11 @@
-import Usuario from "../models/User";
+import Usuario from "../models/Usuario.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   const { nome, email, senha, tipo } = req.body;
-  const hash = await bcrypt.hash(senha, 10);
   try {
+    const hash = await bcrypt.hash(senha, 10);
     const usuario = await Usuario.create({ nome, email, senha: hash, tipo });
     res.json({
       id: usuario.id,
@@ -33,6 +33,7 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
+
     res.json({ token, id: usuario.id, nome: usuario.nome, tipo: usuario.tipo });
   } catch (err) {
     res.status(500).json({ mensagem: err.message });
