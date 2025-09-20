@@ -22,10 +22,13 @@ const PORT = process.env.PORT || 3000;
 
 (async () => {
   try {
+    // Apenas autentica a conexão, não tenta alterar colunas
     await sequelize.authenticate();
     console.log("Conexão com o banco OK!");
-    await sequelize.sync({ alter: true });
-    console.log("Tabelas sincronizadas!");
+
+    // Opcional: sincroniza sem alterar colunas existentes
+    // await sequelize.sync(); // só cria tabelas que não existem
+
     app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
   } catch (err) {
     console.error("Erro ao iniciar servidor:", err);
