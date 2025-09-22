@@ -34,7 +34,16 @@ export const login = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    res.json({ token, id: usuario.id, nome: usuario.nome, tipo: usuario.tipo });
+    // ✅ O erro estava nesta linha. Retorne o objeto 'usuario'
+    res.json({
+      token,
+      usuario: {
+        id: usuario.id,
+        nome: usuario.nome,
+        email: usuario.email,
+        tipo: usuario.tipo,
+      },
+    });
   } catch (err) {
     res.status(500).json({ mensagem: err.message });
   }
