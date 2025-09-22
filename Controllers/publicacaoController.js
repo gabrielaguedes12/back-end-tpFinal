@@ -50,3 +50,46 @@ export const curtirPublicacao = async (req, res) => {
     res.status(500).json({ mensagem: err.message });
   }
 };
+
+export const deletarPublicacao = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const publicacao = await Publicacao.findByPk(id);
+
+    if (!publicacao) {
+      return res.status(404).json({ mensagem: "Publicação não encontrada." });
+    }
+
+    if (publicacao.usuarioId !== req.usuario.id) {
+      return res.status(403).json({ mensagem: "Você não tem permissão para excluir esta publicação." });
+    }
+
+    await publicacao.destroy();
+    res.status(200).json({ mensagem: "Publicação excluída com sucesso." });
+
+  } catch (err) {
+    res.status(500).json({ mensagem: err.message });
+  }
+};
+
+export const editarPublicacao = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const publicacao = await Publicacao.findByPk(id);
+
+    if (!publicacao) {
+      return res.status(404).json({ mensagem: "Publicação não encontrada." });
+    }
+
+    if (publicacao.usuarioId !== req.usuario.id) {
+      return res.status(403).json({ mensagem: "Você não tem permissão para editar esta publicação." });
+    }
+
+    await publicacao.update(req.body);
+
+    res.status(200).json({ mensagem: "Publicação editada com sucesso.", publicacao });
+
+  } catch (err) {
+    res.status(500).json({ mensagem: err.message });
+  }
+};
