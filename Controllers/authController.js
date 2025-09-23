@@ -34,7 +34,6 @@ export const login = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    // ✅ O erro estava nesta linha. Retorne o objeto 'usuario'
     res.json({
       token,
       usuario: {

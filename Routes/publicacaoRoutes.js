@@ -4,7 +4,7 @@ import {
   listarPublicacoes,
   curtirPublicacao,
   deletarPublicacao,
-  editarPublicacao // ✅ Importe a nova função de edição
+  editarPublicacao
 } from "../Controllers/publicacaoController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import multer from "multer";
@@ -16,6 +16,6 @@ router.get("/", listarPublicacoes);
 router.post("/", authMiddleware, upload.single("imagem"), criarPublicacao);
 router.patch("/:id/curtir", authMiddleware, curtirPublicacao);
 router.delete("/:id", authMiddleware, deletarPublicacao);
-router.put("/:id", authMiddleware, editarPublicacao);
+router.put("/:id", authMiddleware, upload.single("imagem"), editarPublicacao);
 
 export default router;
