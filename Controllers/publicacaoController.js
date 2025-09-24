@@ -1,13 +1,14 @@
 import Publicacao from "../models/Publicacao.js";
 import { Op } from "sequelize";
 import cloudinary from "../utils/cloudnary.js";
-import { URL } from 'url';
+import { URL } from 'url'; // Importe a biblioteca URL para ajudar na extração do public_id
 
+// Função para extrair o public_id de uma URL do Cloudinary
 const extractPublicId = (url) => {
   try {
     const parsedUrl = new URL(url);
     const pathSegments = parsedUrl.pathname.split('/');
-
+    // O public_id é o penúltimo segmento, sem a extensão do arquivo
     const publicIdWithExtension = pathSegments[pathSegments.length - 1];
     return publicIdWithExtension.split('.')[0];
   } catch (error) {
@@ -78,6 +79,7 @@ export const deletarPublicacao = async (req, res) => {
       return res.status(403).json({ mensagem: "Você não tem permissão para excluir esta publicação." });
     }
     
+    // ✅ Adicione a exclusão da imagem no Cloudinary aqui também
     if (publicacao.imagem) {
       const publicId = extractPublicId(publicacao.imagem);
       if (publicId) {
@@ -108,7 +110,7 @@ export const editarPublicacao = async (req, res) => {
 
     let urlImagem = publicacao.imagem;
     if (req.file) {
-
+      // ✅ Se uma nova imagem foi enviada, apague a antiga do Cloudinary
       if (publicacao.imagem) {
         const publicId = extractPublicId(publicacao.imagem);
         if (publicId) {
