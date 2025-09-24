@@ -4,7 +4,6 @@ import cors from "cors";
 import sequelize from "./database/db.js";
 import authRoutes from "./Routes/authRoutes.js";
 import publicacaoRoutes from "./Routes/publicacaoRoutes.js";
-import analiseRoutes from "./Routes/analiseRoutes.js"; // ✅ Importe a nova rota
 
 dotenv.config();
 
@@ -16,7 +15,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRoutes);
 app.use("/publicacoes", publicacaoRoutes);
-app.use("/analise", analiseRoutes); // ✅ Conecte a nova rota ao aplicativo
 
 app.get("/", (req, res) => res.send("API rodando!"));
 
@@ -24,12 +22,10 @@ const PORT = process.env.PORT || 3000;
 
 (async () => {
   try {
-    // Apenas autentica a conexão, não tenta alterar colunas
+
     await sequelize.authenticate();
     console.log("Conexão com o banco OK!");
 
-    // Opcional: sincroniza sem alterar colunas existentes
-    // await sequelize.sync(); // só cria tabelas que não existem
 
     app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
   } catch (err) {
