@@ -4,6 +4,7 @@ import cors from "cors";
 import sequelize from "./database/db.js";
 import authRoutes from "./Routes/authRoutes.js";
 import publicacaoRoutes from "./Routes/publicacaoRoutes.js";
+import analiseRoutes from "./Routes/analiseRoutes.js"; // ✅ Importe a nova rota
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRoutes);
 app.use("/publicacoes", publicacaoRoutes);
+app.use("/analise", analiseRoutes);
 
 app.get("/", (req, res) => res.send("API rodando!"));
 
@@ -22,10 +24,8 @@ const PORT = process.env.PORT || 3000;
 
 (async () => {
   try {
-
     await sequelize.authenticate();
     console.log("Conexão com o banco OK!");
-
 
     app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
   } catch (err) {
