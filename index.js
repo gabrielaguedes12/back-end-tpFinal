@@ -4,6 +4,7 @@ import cors from "cors";
 import sequelize from "./database/db.js";
 import authRoutes from "./Routes/authRoutes.js";
 import publicacaoRoutes from "./Routes/publicacaoRoutes.js";
+import analiseRoutes from "./Routes/analiseRoutes.js"; // ✅ Importe a nova rota
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRoutes);
 app.use("/publicacoes", publicacaoRoutes);
+app.use("/analise", analiseRoutes); // ✅ Conecte a nova rota ao aplicativo
 
 app.get("/", (req, res) => res.send("API rodando!"));
 
