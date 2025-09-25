@@ -5,6 +5,9 @@ import sequelize from "./database/db.js";
 import authRoutes from "./Routes/authRoutes.js";
 import publicacaoRoutes from "./Routes/publicacaoRoutes.js";
 import analiseRoutes from "./Routes/analiseRoutes.js"; // ✅ Importe a nova rota
+import emailRoutes from "./Routes/emailRoutes.js"; // nova rota
+
+// ... depois das outras rotas
 
 dotenv.config();
 
@@ -17,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/auth", authRoutes);
 app.use("/publicacoes", publicacaoRoutes);
 app.use("/analise", analiseRoutes);
+app.use("/", emailRoutes);
 
 app.get("/", (req, res) => res.send("API rodando!"));
 
